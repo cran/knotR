@@ -45,14 +45,12 @@ ou237 <- matrix(c(  # NB nonalternating!
 
 jj <- knotoptim(filename,
                 symobj = p237,
-                ou = ou237, prob=0,
-                iterlim=2000, print.level=2 
- #               control=list(trace=100,maxit=1000),
- #               useNLM=FALSE
+                ou = ou237, 
+                prob = 0,
+                iterlim=1000, print.level=2
+#                control=list(trace=100,maxit=100000), useNLM=FALSE
                 )
 
-write_svg(jj,filename)
-save(jj,file=sub('.svg','.data',filename))
-
-
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))
 

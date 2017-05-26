@@ -2,6 +2,8 @@
 \alias{symmetrize}
 \alias{symmetrise}
 \alias{force_nodes}
+\alias{force_nodes_exactly_horizontal}
+\alias{force_nodes_exactly_vertical}
 \alias{force_nodes_mirror_images_LR}
 \alias{force_nodes_mirror_images_UD}
 \alias{force_nodes_on_V_axis}
@@ -21,18 +23,22 @@ Various functionality to impose different types of symmetry on knots
 \usage{
 force_nodes_mirror_images_LR(x,symobj)
 force_nodes_mirror_images_UD(x,symobj)
+force_nodes_exactly_horizontal(x,symobj)
+force_nodes_exactly_vertical(x,symobj)
 force_nodes_on_V_axis(x,xver)
 force_nodes_on_H_axis(x,xhor)
 force_nodes_rotational(x,symobj)
 symmetrize(x,symobj)
-tag_notneeded(x, Mver, xver, Mhor, xhor, Mrot)
+tag_notneeded(x, Mver, xver, Mhor, xhor, Mrot,exact_h,exact_v)
 make_minsymvec_from_minobj(x,symobj)
 minsymvec(vec)
 make_minobj_from_minsymvec(minsymvec,symobj)
 symmetry_object(x, Mver=NULL, xver=NULL, Mhor=NULL, xhor=NULL,
-Mrot=NULL, mcdonalds=FALSE, celtic=FALSE)
+Mrot=NULL, exact_h=NULL, exact_v=NULL,
+mcdonalds=FALSE, celtic=FALSE, reefknot=FALSE,center_crossing=FALSE)
 knot(x, overunderobj, symobj, Mver=NULL, xver=NULL, Mhor=NULL,
-xhor=NULL, Mrot=NULL, mcdonalds=FALSE, celtic=FALSE)
+xhor=NULL, Mrot=NULL, mcdonalds=FALSE, celtic=FALSE,
+reefknot=FALSE,center_crossing=FALSE)
 }
 \arguments{
   \item{x}{Object coerced to class \code{minobj}}
@@ -46,6 +52,11 @@ xhor=NULL, Mrot=NULL, mcdonalds=FALSE, celtic=FALSE)
   \item{xver,xhor}{Vector specifying nodes to be on the vertical
     (horizontal) axis of symmetry.   The nodes are assumed to flow from
     left to right}
+  \item{exact_h,exact_v}{Vector specifying nodes to be exactly
+    horizontal or exactly vertical.  A node is exactly horizontal
+    (vertical) if the y(x) coordinate of the node is the same as the
+    y(x) coordinate of the handle.  Note that the position of an exactly
+    horizontal node is not restricted, and may be anywhere}
   \item{symobj}{An object representing the symmetry of the knot, usually
     created by function \code{symmetry_object()}}
   \item{mcdonalds}{For vertical symmetry, argument \code{mcdonalds} is
@@ -56,6 +67,11 @@ xhor=NULL, Mrot=NULL, mcdonalds=FALSE, celtic=FALSE)
     one makes when tracing the top two strands a knot with this type of
     symmetry).  The only common knot that needs this is \code{7_2}}
   \item{celtic}{Like \code{mcdonalds} but for horizontal symmetry}
+  \item{reefknot}{Like \code{mcdonalds} but for the reefknot}
+  \item{center_crossing}{Implements a peculiar type of rotational
+    symmetry in which the strands pass through the geometrical center of
+    the knot projection.  The only common knot needing this is
+    \code{9_29}}
   \item{minsymvec}{A \dQuote{minimal symmetric vector}.  This is a
     numeric vector containing just the independent degrees of freedom of
     a knot, after symmetry constraints have been imposed.  The idea is
@@ -78,7 +94,11 @@ xhor=NULL, Mrot=NULL, mcdonalds=FALSE, celtic=FALSE)
     (horizontal) axis by taking ordered pairs  of nodes, specified by
     matrix \code{Mver} (\code{Mhor}) and forcing the second node to be
     symmetrically placed with respect to the first
-  \item Function \code{symmetrize_ROT()} symmetrizes a knot around a
+    \item  Functions \code{force_nodes_exactly_horizontal()} and
+    \code{force_nodes_exactly_vertical()} force nodes to be exactly
+    horizontal or exactly vertical respectively.  Nodes so forced do not
+    need to be on an axis of symmetry; they can be anywhere
+    \item Function \code{symmetrize_ROT()} symmetrizes a knot around a
     point of symmetry, producing a rotationally symmetric knot
   }
 }

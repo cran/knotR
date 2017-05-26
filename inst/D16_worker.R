@@ -1,6 +1,7 @@
 library(knotR) 
 filename <- "D16.svg"
 a <- knotR::reader(filename)
+
 Mrot <- matrix(c(
     40,15,30,05,20,35,10,25,
     26,01,16,31,06,21,36,11,
@@ -47,14 +48,8 @@ jj <- knotoptim(filename,
                 ou   = ou16,
                 prob=0,
 #               iterlim=100, print.level=2
-
-
-            control=list(trace=100,maxit=3000), # these arguments for optim()
-                useNLM=FALSE
-
-
-
+               control=list(trace=100,maxit=20000), useNLM=FALSE
                 )
 
-write_svg(jj,filename)
-save(jj,file=sub('.svg','.data',filename))
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))

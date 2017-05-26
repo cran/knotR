@@ -65,4 +65,7 @@ segments(xy[,1],xy[,2],(xy+dx/200)[,1],(xy+dx/200)[,2])
 
 plot(xy, asp=1,cex=bezier_radius(P,n=100)/2)
 
+lapply(as.controlpoints(k8_9),bezier_radius)
+lapply(as.controlpoints(k8_9),bezier_arclength)
+
 }

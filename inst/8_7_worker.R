@@ -1,33 +1,35 @@
 library(knotR)
 filename <- "8_7.svg"
 a <- reader(filename)
+#knotplot2(a,node=TRUE)
 
-sym87 <- symmetry_object(a,Mver=NULL,xver=5)
+sym87 <- symmetry_object(a,Mver=NULL,xver=8)
 
 ou87 <- matrix(c(
-    08,01,
-    02,09,
-    18,03,
-    04,11,
-    13,05,
-    06,14,
-    16,07,
-    10,17
+    23,05,
+    15,22,
+    21,11,
+    10,19,
+    18,07,
+    06,16,
+    04,14,
+    13,02
 ),ncol=2,byrow=TRUE)
 
-knotplot(symmetrize(a,sym87),ou87)
+#knotplot2(a,text=TRUE,lwd=1,circ=FALSE)
+#knotplot(symmetrize(a,sym87),ou87)
 
 jj <-
   knotoptim(filename,
             symobj = sym87,
             ou   = ou87,
             prob = 0,
-#            iterlim=1000,print.level=2,hessian=FALSE
-            control=list(trace=100,maxit=2000), # these arguments for optim()
-            useNLM=FALSE
+            iterlim=10000,print.level=2,hessian=FALSE
+#            control=list(trace=100,maxit=2000), # these arguments for optim()
+#            useNLM=FALSE
             )
 
 
-write_svg(jj, filename)
-save(jj,file=sub('.svg','.data',filename))
+write_svg(jj, filename, safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))
 

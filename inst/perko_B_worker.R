@@ -1,33 +1,39 @@
 library(knotR)
 filename <- "perko_B.svg"
 a <- reader(filename)
+#knotplot2(a,node=TRUE)
 
-sym_perko_B <- symmetry_object(a, xver=23 )
+sym_perko_B <- symmetry_object(a, xver=28 )
+a <- symmetrize(a,sym_perko_B)
+#knotplot2(a,lwd=1,text=TRUE,circ=FALSE,rainbow=TRUE)
+
 
 ou_perko_B <- matrix(c(
-    16,01,
-    02,14,
-    03,20,
-    12,04,
-    18,05,
-    06,17,
-    07,11,
-    22,08,
-    10,23,
-    19,13),
-    byrow=TRUE,ncol=2)
+    14,28,	
+    27,11,
+    06,25,
+    24,17,
+    08,23,
+    22,09,
+    02,21,
+    18,04,
+    16,07,
+    10,15
+), byrow=TRUE,ncol=2)
+
+#knotplot(a,ou_perko_B)
+
+
 
 jj <- knotoptim(filename,
                 symobj = sym_perko_B,
                 ou   = ou_perko_B,
                 prob = 0,
-#                iterlim=1000, print.level=0
-
-                control=list(trace=100,maxit=1000), # these arguments for optim()
-                useNLM=FALSE
-
+                iterlim=1000, print.level=2
+#                control=list(trace=100,maxit=1000), # these arguments for optim()
+#                useNLM=FALSE
 
                 )
 
-write_svg(jj,filename)
-save(jj,file=sub('.svg','.data',filename))
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))

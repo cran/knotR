@@ -26,9 +26,11 @@ jj <- knotoptim(filename,
                 Mver = Mver,
                 xver = 4,
                 ou   = ou62,
-                prob=0,
-                iterlim=1000,print.level=2
+                prob = 0,
+                iterlim=1000, print.level=2
+#                control=list(trace=100,maxit=100000), useNLM=FALSE
                 )
 
-write_svg(jj,filename)
-save(jj,file=sub('.svg','.data',filename))
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))
+

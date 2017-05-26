@@ -1,40 +1,47 @@
 library(knotR)
 filename <- "k11a361.svg"
 a <- reader(filename)
+#knotplot2(a,node=TRUE)
 
 Mver <-
   matrix(c(
-      12,24,
-      13,01,
-      23,11,
-      14,02,
-      04,16,
-      15,03,
-      22,10,
-      05,17,
-      21,9,
-      08,20,
-      19,07,
-      06,18
+      14,28,
+      15,1,
+      27,13,
+      26,12,
+      25,11,
+      16,2,
+      5,19,
+      17,3,
+      24,10,
+      6,20,
+      7,21,
+      9,23,
+      22,8
   ),ncol=2,byrow=TRUE)
+
+symk11 <- symmetry_object(a,Mver,mcdonalds=TRUE)
+a <- symmetrize(a,symk11)
+#knotplot2(a)
+#knotplot2(a,lwd=1,text=TRUE,circ=FALSE)
 
 ouk11 <-
   matrix(c(
-      02,11,
-      17,03,
-      04,16,
-      15,05,
-      06,22,
-      19,07,
-      08,20,
-      21,09,
-      10,18,
-      12,24,
-      23,14
+      14,28,
+      2,13,
+      11,20,
+      24,10,
+      9,23,
+      22,8,
+      6,25,
+      17,5,
+      4,18,
+      19,3,
+      27,16
   ),byrow=TRUE,ncol=2)
+#knotplot(a,ouk11)
 
 
-symk11 <- symmetry_object(a, Mver=Mver, xver=NULL, mcdonalds=TRUE)
 a  <- symmetrize(as.minobj(a),symk11)
 
 jj <- knotoptim(filename,
@@ -45,5 +52,5 @@ jj <- knotoptim(filename,
                 )
 
 
-write_svg(jj,filename)
-save(jj,file=sub('.svg','.data',filename))
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))

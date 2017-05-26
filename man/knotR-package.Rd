@@ -40,7 +40,9 @@ to avoid confusion.
 An \code{.svg} file may be imported into R using the package's
 \code{reader()} function, which creates an \code{inkscape} object.  This
 represents the path of the knot: it does not include over and under
-information.
+information.  The package assumes that inkscape uses absolute
+coordinates (as opposed to relative coordinates); see \code{reader.Rd}
+for more information.
 
 A path may be specified using one of three file formats which have
 different uses: \code{inkscape}, \code{minobj}, \code{controlpoints},

@@ -1,15 +1,39 @@
 library(knotR)
-setwd("~/packages/rhankin/packages/trunk/knot/inst/")
+
 filename <- "4_1.svg"
+a <- reader(filename)
+#knotplot2(a,node=TRUE)
+Mver <- matrix(c(
+    2,4,
+    11,9,
+    1,5,
+    6,14,
+    7,13,
+    12,8
+),ncol=2,byrow=TRUE)
+
+sym41 <- symmetry_object(a,Mver=Mver,xver=c(3,10))
+a <- symmetrize(a,sym41)
+#knotplot2(a)
+#knotplot2(a,text=TRUE,lwd=1,rainbow=TRUE,circ=FALSE)
+ou41 <-
+    matrix(c(
+        5,10,
+        8,13,
+        1,6,
+        11,2
+),ncol=2,byrow=TRUE)
+
+#knotplot(a,ou41)
+
 jj <- knotoptim(filename,
-                Mver = rbind(c(2,3),c(9,7),c(10,6), c(1,4),c(5,11)),
-                xver = 8,   # node on vertical axis
-                ou   = rbind( c(1,5), c(9,2), c(4,8),c(6,11)),
+                symobj = sym41,
+                ou   = ou41,
                 prob=0,
-#                iterlim=100, print.level=2)
-                control=list(trace=100,maxit=1000), # these arguments for optim()
-                useNLM=FALSE
+                iterlim=1000, print.level=2
+#                control=list(trace=100,maxit=100000), useNLM=FALSE
                 )
 
-write_svg(jj,filename)
-save(jj,file=sub('.svg','.data',filename))
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))
+

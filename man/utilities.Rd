@@ -38,12 +38,12 @@ make_knotvec_from_minobj(x)
 }
 \details{
 
-  Functions \code{inkscape()} ,\code{minobj()}, and \code{knotvec()} are
+  Functions \code{inkscape()}, \code{minobj()}, and \code{knotvec()} are
   low-level functions; these are the only places that objects have their
   classes assigned directly.  These functions are not user-friendly and
   require very specific types of object; they perform some checks but
   are not really intended for the user.  Functions \code{as.foo()} are
-  much more user-friendly, and documented at \code{as.Rd}.
+  much more user-friendly, and are documented at \code{as.Rd}.
 
   Functions \code{make_foo_from_bar()} coerce \code{bar} objects into
   \code{foo} objects.  Functions that involve symmetry are documented at
@@ -62,7 +62,7 @@ make_knotvec_from_minobj(x)
     \item If \eqn{n=0} modulo 3, then
     \code{a[n+2,]-a[n+1,]==a[n+1,]-a[n]}, corresponding to the fact that
     the handles are symmetric in inkscape.  This is visualised best by
-    \code{knotplot(a,do_ink=T,doseg=TRUE)}
+    \code{knotplot2(k4_1,ink=TRUE,seg=TRUE)}
   }
 
   Look at functions \code{make_inkscape_from_minobj()} and
@@ -76,10 +76,15 @@ make_knotvec_from_minobj(x)
   objects.  Element \code{$node} shows the positions of the nodes, and
   element \code{$handle_A} shows the positions of (one of) the handles;
   the other handle is symmetrically positioned with respect to its node.
-  Use \code{knotplot(a,do_node_num=TRUE,doseg=TRUE)} to see the meaning
+  Use \code{knotplot2(k4_1,node=TRUE,seg=TRUE)} to see the meaning
   of the entries; the nodes are indicated by a square and the handles by
   circles.
 
+  An object of class \code{controlpoints} is a list of matrices of size
+  4-by-2.  For each matrix, the four rows correspond to the points in
+  2D Cartesian space needed to specify a Bezier curve; further details
+  and examples are given in \code{bezier.Rd}.
+  
   The \strong{\code{knotvec}} class is a named vector of independent
   reals suitable for use with optimization routines.
 
@@ -91,13 +96,11 @@ make_knotvec_from_minobj(x)
 \author{
   Robin K. S. Hankin
 }
-\seealso{\code{\link{knotplot}},\code{\link{symmetrize}}}
+\seealso{\code{\link{knotplot}},\code{\link{symmetrize}},\code{\link{bezier}}}
 \examples{
 \dontrun{
 a <- reader("6_3.svg")  # 'a' is an inkscape object.
 knotplot(a)
-
-
 
 
 }

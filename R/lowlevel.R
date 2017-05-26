@@ -166,7 +166,6 @@
   } else if(inherits(x,'controlpoints')){
     return(make_inkscape_from_controlpoints(x))
   } else {
-    browser()
     stop("as.inkscape() doesn't have this functionality")
   }
 }
@@ -227,7 +226,7 @@
   }
 }
 
-`knot` <- function(x, overunderobj, symobj, Mver=NULL, xver=NULL, Mhor=NULL, xhor=NULL, Mrot=NULL, mcdonalds=FALSE, celtic=FALSE){
+`knot` <- function(x, overunderobj, symobj, Mver=NULL, xver=NULL, Mhor=NULL, xhor=NULL, Mrot=NULL, mcdonalds=FALSE, celtic=FALSE,reefknot=FALSE,center_crossing=FALSE){
 
   if(inherits(x,'knot')){return(knot)}
   if(missing(symobj)){
@@ -239,7 +238,9 @@
                       xhor=xhor,
                       Mrot=Mrot,
                       mcdonalds=mcdonalds,
-                      celtic=celtic
+                      celtic=celtic,
+                      reefknot=reefknot,
+                      center_crossing=center_crossing
                       )
   }
 

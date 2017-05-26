@@ -100,7 +100,13 @@ plot(NULL,xlim=c(-600,2200),ylim=c(-600,2200),asp=1,axes=FALSE)
 offx <- 1400
 offy <- 1500
 
-overunder_fig8 <- rbind( c(1,5), c(9,2), c(4,8),c(6,11))
+overunder_fig8 <- 
+  matrix(c(
+      05,10,
+      08,13,
+      01,06,
+      11,02
+      ),ncol=2,byrow=TRUE)
 
 jj <- sweep(as.inkscape(fig8),2,c(0,offy),"+")
 knotplot2(jj,setup=FALSE,node=TRUE,lwd=3,circ=0) # top left

@@ -42,12 +42,17 @@
     x$node[a,1] <-  +x$node[b,1]  # x coord
     x$node[a,2] <-  -x$node[b,2]  # y coord; cf equivalent lines in force_nodes_mirror_images_LR()
     
-    if(symobj$celtic){
+    if(isTRUE(symobj$celtic)){
       x$handle_A[a,1] <- +x$node[b,1] - (x$handle_A[b,1] - x$node[b,1])    # x coord of handle
       x$handle_A[a,2] <- -x$node[b,2] + (x$handle_A[b,2] - x$node[b,2])    # y coord of handle (NB: strand goes the other way)
     } else { # default case; everything else pretty much
       x$handle_A[a,1] <- +x$node[b,1] + (x$handle_A[b,1] - x$node[b,1])    # x coord of handle
       x$handle_A[a,2] <- -x$node[b,2] - (x$handle_A[b,2] - x$node[b,2])    # y coord of handle (NB: strand goes the other way)
+    }
+
+    if(isTRUE(symobj$reefknot)){
+        x$handle_A[a,1] <- +x$node[b,1] - (x$handle_A[b,1] - x$node[b,1])    # x coord of handle (NB: strand goes the other way)
+        x$handle_A[a,2] <- -x$node[b,2] + (x$handle_A[b,2] - x$node[b,2])    # y coord of handle (NB: strand goes the other way)
     }
   }
   return(x)
@@ -71,6 +76,20 @@
   return(x)
 }
 
+`force_nodes_exactly_horizontal` <- function(x,symobj){  # but not necessarily on the vertical axis of symmetry
+  stopifnot(inherits(x,"minobj"))
+  eh <- symobj$exact_h
+  x$handle_A[eh,2] <- x$node[eh,2]
+  return(x)
+}
+
+`force_nodes_exactly_vertical` <- function(x,symobj){  # but not necessarily on the horizontal axis of symmetry
+  stopifnot(inherits(x,"minobj"))
+  ev <- symobj$exact_h
+  x$handle_A[ev,2] <- x$node[ev,2]
+  return(x)
+}
+
 `force_nodes_rotational` <- function(x,symobj){
   stopifnot(inherits(x,"minobj"))
   Mrot <- symobj$Mrot
@@ -82,13 +101,19 @@
     for(j in seq(from=2,to=ncol(Mrot))){
       a <- Mrot[i,j]
       b <- Mrot[i,1]
-      
+
+
       rotated_node <- .rot(x$node    [b,], theta=thetafun(j))
       rotated_span <- .rot(x$handle_A[b,]- x$node[b,], theta=thetafun(j))
 
       x$node[a,] <- rotated_node
-      x$handle_A[a,] <- rotated_node + rotated_span
-
+      
+      if(isTRUE(symobj$center_crossing)){
+        x$handle_A[a,] <- rotated_node - rotated_span
+      } else {
+        x$handle_A[a,] <- rotated_node + rotated_span
+      }
+      
     } # j loop closes
   } # i loop closes
   return(x)  
@@ -101,10 +126,12 @@
   if(!is.null(symobj$Mver)){x <- force_nodes_mirror_images_LR(x,symobj)}
   if(!is.null(symobj$Mhor)){x <- force_nodes_mirror_images_UD(x,symobj)}
   if(!is.null(symobj$Mrot)){x <- force_nodes_rotational      (x,symobj)}
+  if(!is.null(symobj$exact_h)){x <- force_nodes_exactly_horizontal(x,symobj)}
+  if(!is.null(symobj$exact_v)){x <- force_nodes_exactly_vertical(x,symobj)}
   return(x)
 }
 
-`tag_notneeded` <- function(x, Mver, xver, Mhor, xhor, Mrot){
+`tag_notneeded` <- function(x, Mver, xver, Mhor, xhor, Mrot, exact_h, exact_v){
   stopifnot(inherits(x,"minobj"))
 
   ## first the reflection-symmetric nodes about a vertical axis; only
@@ -129,11 +156,18 @@
   x$node[Mrot[,-1],]     <- .notneededval()
   x$handle_A[Mrot[,-1],] <- .notneededval()
 
+  ## now the nodes that are forced to be exactly horizontal:
+  x$handle_A[exact_h,1]  <- .notneededval()
+
+  ## now the nodes that are forced to be exactly vertical:
+  x$handle_A[exact_v,1]  <- .notneededval()
+
   return(x)
   
 }
 
-`symmetry_object` <- function(x, Mver=NULL, xver=NULL, Mhor=NULL, xhor=NULL, Mrot=NULL, mcdonalds=FALSE, celtic=FALSE){
+`symmetry_object` <- function(x, Mver=NULL, xver=NULL, Mhor=NULL, xhor=NULL, Mrot=NULL, exact_h=NULL, exact_v=NULL,
+                              mcdonalds=FALSE, celtic=FALSE, reefknot=FALSE,center_crossing=FALSE){
 
   if(inherits(x,"knot")){return(x$symobj)}
   
@@ -147,9 +181,17 @@
           symmetric about a horizontal line of symmetry")
   }
   
-  indep <- as.knotvec(tag_notneeded(as.minobj(x), Mver, xver, Mhor, xhor, Mrot)) != .notneededval()
+  indep <- as.knotvec(tag_notneeded(as.minobj(x), Mver, xver, Mhor, xhor, Mrot,exact_h, exact_v)) != .notneededval()
 
-  return(list(Mver=Mver, xver=xver, Mhor=Mhor, xhor=xhor, Mrot=Mrot, mcdonalds=mcdonalds, celtic=celtic, indep = indep))
+  return(list(
+      Mver    = Mver,
+      xver    = xver,
+      Mhor    = Mhor,
+      xhor    = xhor,
+      Mrot    = Mrot,
+      exact_h = exact_h,
+      exact_v = exact_v,
+      mcdonalds=mcdonalds, celtic=celtic, reefknot=reefknot, center_crossing=center_crossing, indep = indep))
 }
 
 `make_minsymvec_from_minobj` <- function(x,symobj){

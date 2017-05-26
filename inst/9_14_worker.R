@@ -33,11 +33,11 @@ knotplot(a,ou914)
 jj <- knotoptim(filename,
                 symobj  = sym914,
                 ou      = ou914,
-                prob    = 0,
-                iterlim = 100,print.level=2
+                prob = 0,
+                iterlim=1000, print.level=2
+#                control=list(trace=100,maxit=100000), useNLM=FALSE
                 )
 
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))
 
-
-write_svg(jj,filename)
-save(jj,file=sub('.svg','.data',filename))

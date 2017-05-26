@@ -24,13 +24,11 @@ as.minsymvec(x,symobj)
 }
 \details{
 The \code{as.foo()} functions are meant to be user-friendly; they use
-the low-level functions like \code{make_minimal_object()}, which are a
-bit messy.
-
+low-level functions like \code{make_knotvec_from_minobj()} (all of
+which are documented at \code{utilities.Rd}), which are a bit messy.
 }
-\author{
-Robin K. S. Hankin
-}
+\author{Robin K. S. Hankin}
+\seealso{\code{\link{utilities}}}
 \examples{
 as.minobj(k6_2)
 

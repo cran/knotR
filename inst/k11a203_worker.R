@@ -35,15 +35,12 @@ sym11 <- symmetry_object(a, Mver=Mver)
 
 jj <- knotoptim(filename,
                 symobj = sym11,
-                ou = ou11, prob=0,
-#                iterlim=10000, print.level=2 )
-                control=list(trace=100,maxit=1000), # these arguments for optim()
-                useNLM=FALSE
+                ou = ou11, 
+                prob = 0,
+                iterlim=1000, print.level=2
+#                control=list(trace=100,maxit=100000), useNLM=FALSE
                 )
 
-
-write_svg(jj,filename)
-save(jj,file=sub('.svg','.data',filename))
-
-
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))
 

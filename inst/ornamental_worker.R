@@ -1,33 +1,51 @@
 library(knotR) 
-filename <- "20-crossings-ornamental-knot.svg"
 filename <- "ornamental20.svg"
 a <- reader(filename)
+#knotplot2(a,node=TRUE)
 
-sym20 <- symmetry_object(a, xver=4, Mrot=outer(0:8,c(1,19,37,10,28),"+"))
+
+jj  <-
+  matrix(c(
+      15:25,
+      37:47,
+      04:14,
+      26:36,
+      48:55,1:3
+      ),nrow=5,byrow=TRUE)
+
+
+sym20 <- symmetry_object(a, xver=4, Mrot=t(jj))
+a <- symmetrize(a,sym20)
+#knotplot2(a)
+#knotplot2(a,lwd=1,circ=F,text=T,rainbow=T)
+
+
 
 ou20 <- matrix(c(
-    01,42,
-    25,02,
-    03,27,
-    23,04,
-    05,31,
-    10,06,
-    07,29,
-    30,09,
-    34,11,
-    12,36,
-    32,13,
-    14,40,
-    19,15,
-    37,33,
-    16,38,
-    39,18,
-    43,20,
-    21,45,
-    41,22,
-    28,24
+    1,50,  #1
+    31,2,  #2
+    3,33,  #3 
+    27,4,  #4  
+     5,37, #5
+    12,6, #6
+    9,35, #7
+    36,11, #8
+    42,13, #9
+    14,44, #10 
+    38,15, #11
+    16,48, #12
+    23,17, #13
+    20,46, #14
+    47,22, #15
+    53,24, #16
+    25,55,  #17
+    34,28,  #18
+    45,39,  # 19
+    49,26  #20
+    
 ),ncol=2,byrow=TRUE)
 
+#knotplot(a,ou20)
 
 
 # We will try and request that node 4 is on the vertical centreline.
@@ -36,15 +54,10 @@ jj <- knotoptim(filename,
                 symobj = sym20,
                 ou   = ou20,
                 prob=0,
-#                iterlim=1, print.level=2
-
-
-               control=list(trace=100,maxit=1000), # these arguments for optim()
-                useNLM=FALSE
-
-
-
+                iterlim=1000, print.level=2
+#                control=list(trace=100,maxit=10000), # these arguments for optim()
+#                useNLM=FALSE
                 )
 
-write_svg(jj,filename)
-save(jj,file=sub('.svg','.data',filename))
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))

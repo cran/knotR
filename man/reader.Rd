@@ -8,18 +8,22 @@
 }
 \usage{
 reader(filename)
-write_svg(k, oldfile, newfile = .arse(oldfile),
+write_svg(k, oldfile, safe=TRUE,
     regex1 ='sodipodi:docname=',
     regex2=' *d *= *" *M.*C.*[zZ] *"')
 }
 \arguments{
   \item{filename}{Name of a file to be read by \code{reader()}; usually
     an inkscape \code{.svg} file}
-  \item{k, oldfile, newfile, regex1, regex2}{Various arguments sent to
-    \code{write_svg()}; see the source code for details}
+  \item{safe}{Boolean, with default \code{TRUE} meaning to save file
+    \dQuote{\code{foo.svg}} as \dQuote{\code{foo_smooth.svg}}
+    and \code{FALSE} meaning to overwrite \code{foo.svg}.}    
+  \item{k, oldfile, regex1, regex2}{Various arguments sent to
+    \code{write_svg()}; see the source code for details.
+    Argument \code{k} is a knot, \code{oldfile} an \code{.svg} file for
+    reference.}
 }
 \details{
-
   Function \code{reader()} is the way to get started with a new
   knot. This takes a filename which is an \code{.svg} file created with
   inkscape.  Instructions for creating a suitable inkscape file are

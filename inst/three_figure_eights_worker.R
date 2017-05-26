@@ -1,40 +1,47 @@
 library(knotR) 
 filename <- "three_figure_eights.svg"
 a <- reader(filename)
+#knotplot2(a,node=TRUE)
+
 Mrot <- matrix(c(
-    12,04,20,
-    15,07,23,
-    14,06,22,
-    17,09,01,
-    11,03,19,
-    16,08,24,
-    13,05,21,
-    10,02,18
+    23,12,1,
+    22,11,33,
+    15,4,26,
+    16,5,27,
+    14,3,25,
+    21,10,32,
+    20,9,31,
+    19,8,30,
+    13,2,24,
+    17,6,28,
+    18,7,29
     ),ncol=3,byrow=TRUE)
 sym38 <- symmetry_object(a, xver=24, Mrot=Mrot)
-#knotplot2(symmetrize(a,sym38),text=T,width=F,lwd=1,rain=T)
+a <- symmetrize(a,sym38)
+#knotplot2(a,node=T)
+#knotplot2(a,node=F,lwd=1,text=T,rainbow=T,circ=F)
 
 ou38 <- matrix(c(
-    02,06,
-    05,03,
-    04,08,
-    07,05,
-    
-    10,14,
-    13,11,
-    12,16,
-    15,13,
-    
-    18,22,
-    21,19,
-    20,24,
-    23,21
+    22,15,
+    17,21,
+    19,13,
+    14,17,
+
+    11,4,
+    6,10,
+    8,2,
+    3,6,
+
+    33,26,
+    28,32,
+    30,24,
+    25,28
+
+
 ),ncol=2,byrow=TRUE)
 
-a <- symmetrize(a,sym38)
-
-
 #knotplot(a,ou38)
+#stop()
 
 
 # We will try and request that node 4 is on the vertical centreline.
@@ -42,13 +49,11 @@ a <- symmetrize(a,sym38)
 jj <- knotoptim(filename,
                 symobj = sym38,
                 ou   = ou38,
-                prob=0,
-#                iterlim=1, print.level=2
-
-
-               control=list(trace=100,maxit=20000), # these arguments for optim()
-                useNLM=FALSE
+                prob = 0,
+                iterlim=1000, print.level=2
+#                control=list(trace=100,maxit=100000), useNLM=FALSE
                 )
 
-write_svg(jj,filename)
-save(jj,file=sub('.svg','.data',filename))
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))
+

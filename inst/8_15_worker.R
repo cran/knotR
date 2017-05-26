@@ -15,23 +15,27 @@ sym815 <- symmetry_object(a,Mver=Mver,xver=c(2,10))
 
 
 ou815 <- matrix(c(
-    16,5,
-    12,1,
-    2,14,
-    7,3,
-    4,9,
-    6,15,
-    10,7,
+    16,05,
+    12,01,
+    02,14,
+    07,03,
+    04,09,
+    06,15,
+    10,07,
     14,11
 ),ncol=2,byrow=TRUE)
+
 jj <-
   knotoptim(filename,
             symobj = sym815,
             ou   = ou815,
             prob = 0,
-            iterlim=1000,print.level=2,hessian=FALSE)
+            iterlim=1000,print.level=2,hessian=FALSE
+#                control=list(trace=100,maxit=30000), # these arguments for optim()
+#                useNLM=FALSE
+)
 
 
-write_svg(jj, filename)
-save(jj,file=sub('.svg','.data',filename))
+write_svg(jj, filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))
 

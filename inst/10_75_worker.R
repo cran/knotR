@@ -37,12 +37,12 @@ knotplot(ar,ou1075,gap=4)
 
 jj <- knotoptim(filename,
                 symobj = sym1075,
-                ou = ou1075, prob=0.1,
-                iterlim=1000, print.level=2 )
+                ou = ou1075, 
+                prob = 0,
+                iterlim=1000, print.level=2
+#                control=list(trace=100,maxit=100000), useNLM=FALSE
+                )
 
-
-write_svg(jj,filename)
-save(jj,file=sub('.svg','.data',filename))
-
-
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))
 

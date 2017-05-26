@@ -1,5 +1,5 @@
 ## This shows how to impose reflectional symmetry on
-## k7_4, in the data directory.
+## k7_4
 a <- reader("~/packages/rhankin/packages/trunk/knot/inst/7_4_experimental.svg")
 knotplot(a,T,T,T,T,T)
 ## Now create a symmetry object (look at the knotplot(a) to see the

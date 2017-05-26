@@ -30,13 +30,16 @@ knotplot2(x, rainbow=FALSE, seg=FALSE, text=FALSE, cross=FALSE, ink=FALSE,
 }
 }
 \details{
-  Function \code{knotplot2()} is useful for production-quality plotting;
-  \code{knotplot2()} is more useful for development.
+  Function \code{knotplot()} is useful for production-quality plotting
+  of knots with crossings indicated; \code{knotplot2()} is more useful
+  for development.
 
   For \code{knotplot2()}:
   \itemize{
     \item \code{rainbow}; use rainbow colouring for the segments
-    \item \code{seg}; plot the Bezier nodes and handles
+    \item \code{seg}; plot the Bezier nodes and handles.  The positions
+    of the nodes and handles are obtained from an object of class
+    \code{controlpoints}.
     \item \code{text}; include the segment number on the segment
     \item \code{cross}; label the crossings
     \item \code{ink}; label the nodes with their inkscape numbering

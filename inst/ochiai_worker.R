@@ -1,5 +1,4 @@
 library(knotR)
-setwd("~/packages/rhankin/packages/trunk/knot/inst/")
 filename <- "ochiai.svg"
 ou   <-
     matrix(c(
@@ -22,8 +21,12 @@ jj <- knotoptim(filename,
                 xver = 6,
                 ou = ou,
                 prob=0,
-                iterlim=30, print.level=2
+                iterlim=1000, print.level=2
+#                control=list(trace=100,maxit=1000), # these arguments for optim()
+#                useNLM=FALSE
                 )
 
-write_svg(jj,filename)
-stop() 
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))
+
+

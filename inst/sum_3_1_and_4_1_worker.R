@@ -2,7 +2,7 @@ library(knotR)
 filename <- "sum_3_1_and_4_1.svg"
 a <- reader(filename)
 
-sym34 <- symmetry_object(a, xver=c(10,18))
+sym34 <- symmetry_object(a, xver=18)
 a <- symmetrize(a,sym34)
 
 ou34 <- matrix(c(
@@ -21,11 +21,11 @@ knotplot(a,ou34)
 jj <- knotoptim(filename,
                 symobj = sym34,
                 ou   = ou34,
-                prob=0,
-                iterlim=1000, print.level=2,
-#               control=list(trace=100,maxit=2000), # these arguments for optim()
-                useNLM=TRUE
+                prob = 0,
+                iterlim=1000, print.level=2
+#                control=list(trace=100,maxit=100000), useNLM=FALSE
                 )
 
-write_svg(jj,filename)
-save(jj,file=sub('.svg','.data',filename))
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))
+

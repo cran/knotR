@@ -35,13 +35,15 @@ knotplot2(symmetrize(a,sym31),seg=T,node=T)
 jj <- knotoptim(filename,
                 symobj = sym31,
                 ou   = ou31,
-                prob=0.1,
-                iterlim=1000,print.level=2
+                prob = 0,
+                iterlim=1000, print.level=2
+#                control=list(trace=100,maxit=100000), useNLM=FALSE
                 )
 
+write_svg(jj,filename,safe=FALSE)
+dput(jj,file=sub('.svg','.S',filename))
 
-write_svg(jj,filename)
-save(jj,file=sub('.svg','.data',filename))
+
 stop() 
 
 

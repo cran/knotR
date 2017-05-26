@@ -225,7 +225,10 @@
   }
 }
 
-`crossing_strands` <- function(b){crossing_points(b,give_all=TRUE)[,1:2] }
+`crossing_strands` <- function(b){
+    out <- crossing_points(b,give_all=TRUE)
+    out[out[,9]>0,1:2]
+}
   
 `total_crossing_angles` <- function(b,cpb){
   if(missing(cpb)){cpb <- crossing_points(b)}
@@ -257,6 +260,7 @@
 }
 
 `total_string_length` <- function(b){
+  b <- as.controlpoints(b)
   sum(unlist(lapply(b,bezier_arclength)))
 }
 
@@ -350,7 +354,7 @@
       ang = total_crossing_angles(b,cpb=cpb),
       ben = total_bending_energy(b,power=2),
       len = total_string_length(b),
-      mid = midpoint_badness(b),
+      mid = midpoint_badness(b,cpb),
       clo = node_crossing_badness(b,cpb),
       swi = curvature_switching_badness(b),
       con = curvature_consecutive_segment_switching_badness(b),
@@ -423,12 +427,20 @@
     }
 }
 
-`write_svg` <- function(k, oldfile, newfile = .arse(oldfile), regex1 = 'sodipodi:docname=', regex2=' *d *= *" *M.*C.*[zZ] *"'){
+`write_svg` <- function(k, oldfile, safe=TRUE, regex1 = 'sodipodi:docname=', regex2=' *d *= *" *M.*C.*[zZ] *"'){
+
+    if(safe){
+    	newfile <- .arse(oldfile)
+    } else {
+	newfile <- oldfile
+    }
     text <- readLines(oldfile)
     
     ## first the filename:
-    n <- .getn(regex1,text)
-    text[n] <- sub(oldfile,newfile,text[n])
+    if(!safe){
+      n <- .getn(regex1,text)
+      text[n] <- sub(oldfile,newfile,text[n])
+    }
     
     ## now the data line:
     n <- .getn(regex2,text)
