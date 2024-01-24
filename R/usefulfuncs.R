@@ -13,7 +13,7 @@
 
 `knotplot2` <-
     function(x, rainbow=FALSE, seg=FALSE, text=FALSE, cross=FALSE, ink=FALSE,
-             node=FALSE, width=TRUE, all=FALSE, n=100, circ=1000, lwd=8, setup=TRUE, ...){ # knotplot(reader("7_3.svg"))
+             node=FALSE, width=TRUE, all=FALSE, n=100, circ=1000, lwd=8, add=FALSE, ...){ # knotplot(reader("7_3.svg"))
         
   if(all){ # switch everything on
     rainbow <- TRUE  
@@ -30,7 +30,7 @@
 
   ## first set up the axes:
       
-  if(setup){plot(a,type='n',asp=1, axes=FALSE, xlab='',ylab='')}
+  if(!add){plot(a,type='n',asp=1, axes=FALSE, xlab='',ylab='')}
 
   ## Next the basic plot:
 
@@ -83,7 +83,6 @@
 #      points(jj,pch=16,col='gray',cex=3)
 #      text(jj,as.character(seq_len(nrow(jj))),col='blue',cex=2)
         }
-
 }
 
 `getstringpoints` <- function(b,give_strand=FALSE,n=100){
@@ -96,21 +95,20 @@
     do.call("rbind",sapply(seq_along(b),f,simplify=FALSE))
 }
 
-
-`knotplot` <- function(x, ou, gap=20, n=100, lwd=8, setup=TRUE, ...){
+`knotplot_old` <- function(x, ou, gap=20, n=100, lwd=8, add=FALSE, ...){
     if(inherits(x,'knot')){
       ou <- x$overunderobj
       x <- as.minobj(x)
     }
     stopifnot(is.sensible(ou,x))
     a <- as.inkscape(x)
-    if(setup){
+    if(!add){
       plot(a,type='n',asp=1, axes=FALSE, xlab='', ylab='', ...)
     }
 
     b <- as.controlpoints(a)
 
-  xy <- matrix(0,0,2)
+    xy <- matrix(0,0,2)
     for(i in seq_along(b)){  # loop over all Bezier segments
       tee <- seq(from=0, to=1, len=n)  # start with no NAs
       overs <- ou[ou[,2]==i,1]  # strands that pass *over* strand i  (NB: might be empty!)
@@ -128,6 +126,38 @@
     return(invisible(xy))
 }
 
+`knotplot` <- function(x, ou, gapwidth=1, n=100, lwd=8, add=FALSE, ...){
+    if(inherits(x,'knot')){
+      ou <- x$overunderobj
+      x <- as.minobj(x)
+    }
+    stopifnot(is.sensible(ou,x))
+    a <- as.inkscape(x)
+    if(!add){
+      plot(a,type='n',asp=1, axes=FALSE, xlab='', ylab='', ...)
+    }
+
+    b <- as.controlpoints(a)
+
+    xy_thin  <- matrix(0,0,2)
+    xy_thick <- matrix(0,0,2)
+    for(i in seq_along(b)){  # loop over all Bezier segments
+      tee <- seq(from=0, to=1, len=n)  
+      overs <- ou[ou[,2]==i,1]  # strands that pass *over* strand i  (NB: might be empty!)
+      for(j in overs){  # loop over strands j that pass over strand i; i is under, j is over
+        jj <- bezier_intersect(b[[i]],b[[j]],'para') # jj: c(ess,tee)
+        crosspoint <- jj[2]  # crosspoint parameter for the OVERstrand
+        xy_thick <- rbind(xy_thick,bezier(b[[j]],tee=seq(from=crosspoint-0.2,to=crosspoint+0.2, length=n)),NA)
+      }
+      xy_thin <- rbind(xy_thin, bezier(b[[i]],tee=tee))
+    } # 'i' loop closes
+
+    points(xy_thin, type='l',lwd=lwd,              lend=1, ljoin=1,              ...)
+    points(xy_thick,type='l',lwd=lwd*(1+gapwidth), lend=1, ljoin=1, col="white", ...)
+    points(xy_thick,type='l',lwd=lwd,              lend=1, ljoin=1,              ...)
+
+    return(invisible(xy_thin))
+}
 
 `bezier_angle` <- function(P1,P2){  # returns \cos^2\theta, where
                                     # \theta is the angle of
@@ -230,7 +260,7 @@
     out[out[,9]>0,1:2]
 }
   
-`total_crossing_angles` <- function(b,cpb){
+`total_crossing_angle_badness` <- function(b,cpb){
   if(missing(cpb)){cpb <- crossing_points(b)}
   
   jj <- cpb[cpb[,9]==1,1:2,drop=FALSE]  # strand numbers of crossing strand pairs
@@ -291,7 +321,7 @@
     b <- as.controlpoints(b)
     badness <- function(P){
         jj <- bezier_curvature(P,n=100)
-        jmm <- c(min(jj),max(jj))
+        jmm <- c(min(jj,na.rm=TRUE),max(jj,na.rm=TRUE))
         
         if(prod(jmm)>=0){ # either always +ve or always -ve
             return(0)
@@ -351,7 +381,7 @@
   if(missing(cpb)){  cpb <- crossing_points(b) }  
   c(
       pot = total_crossing_potential_energy(b,cpb=cpb),
-      ang = total_crossing_angles(b,cpb=cpb),
+      ang = total_crossing_angle_badness(b,cpb=cpb),
       ben = total_bending_energy(b,power=2),
       len = total_string_length(b),
       mid = midpoint_badness(b,cpb),
@@ -367,7 +397,7 @@
   if(missing(cpb)){  cpb <- crossing_points(b) }
   weights <- weights * 
     c(pot = 100,
-      ang = 1,
+      ang = 0.1,
       ben = 6,
       len = 0.000001,
       mid = 100,
@@ -477,9 +507,9 @@
          symobj=symobj)
   }
 
-`is.sensible` <- function(overunderobj,knot){
+`is.sensible` <- function(overunderobj,x){
 
-    jj1 <- crossing_points(knot,TRUE)
+    jj1 <- crossing_points(x,TRUE)
     jj1 <- jj1[jj1[,9]==1,1:2,drop=FALSE]
     if(length(jj1)==0){  # unknot
       return(length(overunderobj)==0)
@@ -496,12 +526,13 @@
         return(FALSE)
     }
 }
-
+ 
 `overunder` <- function(x){
   x$overunderobj
 }
 
 `overunder<-` <- function(x,value){
+  stopifnot(is.sensible(value,x))
   x$overunderobj <- value
   return(x)
 }

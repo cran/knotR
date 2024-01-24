@@ -1,4 +1,4 @@
-### R code from vignette source 'knot.Rnw'
+### R code from vignette source 'knotR.Rnw'
 
 ###################################################
 ### code chunk number 1: setup
@@ -24,7 +24,7 @@ knotplot2(k76_rough, seg=TRUE)
 
 
 ###################################################
-### code chunk number 4: knot.Rnw:205-211
+### code chunk number 4: knotR.Rnw:207-213
 ###################################################
 par(oma=c(0, 0, 0, 0))
 par(mar=c(0, 0, 0, 0))
@@ -38,7 +38,7 @@ knotplot2(k7_6,text=TRUE,lwd=1,circ=0,rainbow=TRUE)
 ### code chunk number 5: k76_desiderata
 ###################################################
 b <- as.controlpoints(k76_rough)
-total_crossing_angles(b)
+total_crossing_angle_badness(b)
 total_bending_energy(b)
 
 
@@ -69,7 +69,7 @@ ou76 <- matrix(c(
 
 
 ###################################################
-### code chunk number 9: knot.Rnw:294-295
+### code chunk number 9: knotR.Rnw:296-297
 ###################################################
 knotplot(k7_6,ou76)
 
@@ -109,17 +109,17 @@ overunder_fig8 <-
       ),ncol=2,byrow=TRUE)
 
 jj <- sweep(as.inkscape(fig8),2,c(0,offy),"+")
-knotplot2(jj,setup=FALSE,node=TRUE,lwd=3,circ=0) # top left
+knotplot2(jj,add=TRUE,node=TRUE,lwd=3,circ=0) # top left
 
 fig8_symmetrized <- symmetrize(fig8,sym8)
 jj <- sweep(as.inkscape(fig8_symmetrized),2,c(offx,offy),"+")
-knotplot2(jj,setup=FALSE,node=FALSE,width=TRUE)  # top right
+knotplot2(jj,add=TRUE,node=FALSE,width=TRUE)  # top right
 
 jj <- sweep(as.inkscape(k4_1),2,c(0,0),"+")
-knotplot2(jj,setup=FALSE,node=FALSE,width=TRUE)  # lower left
+knotplot2(jj,add=TRUE,node=FALSE,width=TRUE)  # lower left
 
 jj <- sweep(as.inkscape(k4_1),2,c(offx,0),"+")
-knotplot(jj,overunder_fig8,setup=FALSE,gap=50)  # lower right
+knotplot(jj,overunder_fig8,add=TRUE)          # lower right
 
 
 
@@ -158,9 +158,9 @@ jjB <- as.inkscape(perko_B)*1.7
 oA <- perko_A$overunder
 oB <- perko_B$overunder
 
-knotplot(jjA,ou=oA,setup=FALSE,gap=50,lwd=4)
+knotplot(jjA,ou=oA,add=TRUE,lwd=4)
 jjB <- sweep(as.inkscape(jjB),2,c(1500,-600),"+")
-knotplot(jjB,ou=oB,setup=FALSE,gap=50,lwd=4)
+knotplot(jjB,ou=oB,add=TRUE,lwd=4)
 
 
 ###################################################
@@ -170,7 +170,7 @@ par(oma=c(0, 0, 0, 0))
 par(mar=c(0, 0, 0, 0))
 par(plt=c(0, 1, 0, 1))
 par(pty='m')
-knotplot(ornamental20,gap=20)
+knotplot(ornamental20)
 
 
 ###################################################
@@ -180,7 +180,7 @@ par(oma=c(0, 0, 0, 0))
 par(mar=c(0, 0, 0, 0))
 par(plt=c(0, 1, 0, 1))
 par(pty='m')
-knotplot(k10_123,gap=20)
+knotplot(k10_123)
 
 
 ###################################################
@@ -215,7 +215,7 @@ for(i in 1:3){
         k <- as.inkscape(a[[n]])
         k[,2] <- k[,2] - mean(k[,2])
         k <- sweep(k,2,c(xoff,yoff),"+")
-        knotplot(k,b[[n]],setup=FALSE,lwd=2,gap=30)
+        knotplot(k,b[[n]],add=TRUE,lwd=2)
     }
 }
 

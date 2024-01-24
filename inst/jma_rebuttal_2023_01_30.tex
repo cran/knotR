@@ -1,0 +1,311 @@
+\documentclass[12pt]{article}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\begin{document}
+
+\section*{Rebuttal to ``Visually pleasing knot projections" by
+  Robin K. S. Hankin (submitted to JMA, manuscript 209604076); review
+  30 January 2023}
+
+(Below, the reviewer's comments are in black, and my replies to the
+issues are in \textcolor{blue}{blue}.  I have indicated changes to the
+manuscript where appropriate).
+
+\section*{\textcolor{blue}{Overall response to the review}}
+
+\textcolor{blue}{The comments have resulted in a much stronger
+  document.  I have carried out all the detailed suggestions, as
+  presented below, and offer a commentary on some of the ideas.}
+
+\section*{Detailed rebuttal}
+
+Comments from the Editors and Reviewers:
+
+I appreciate and accept most of the comments made by the author in his
+rebuttal and the corresponding fixes in the manuscript.  But I have a
+remaining concern that much of this material is perfect for an on-line
+tutorial on how to use package [27] to draw optimized knot diagrams,
+but JMA is not the right place to publish such a
+tutorial.\textcolor{blue}{ I would characterise the submission, not as
+  a online tutorial, but as a discursive yet mathematical outlining of
+  the conceptual and computational difficulties of automated
+  beautification of knot diagrams (not forgetting to discuss the
+  advantages!).  I have expanded the discussion of the aesthetics of
+  knot diagrams.  \\ \\ On the online tutorial comparison: I do not
+  regard the essence of the submission as being at all dependent on
+  inkscape or R.  Any vectorised graphics editor (VGE) that can work
+  with Bezier curves would be as good as inkscape.  Adobe illustrator,
+  or Google drawings etc etc could be substituted for inkscape.  So in
+  the submission, ``inkscape'' is short for ``any VGE''.  The
+  difficulty is that a manuscript needs a specific VGE to concretify
+  the discussions.  The same reasoning applies to my choice of R,
+  which was again driven by my familiarity with it; matlab or python
+  would be just as good.  I believe that the resubmission gets this
+  point across.}
+
+The content that is most fitting for a JMA paper is a discussion of
+what makes a knot diagram ``beautiful" and that discussion will
+clearly be biased by the personal view of the author (perhaps enhanced
+by a ``user-study" among family and colleagues).  Thus lines 14 - 20
+on page 4 are of prime importance and could be fleshed out more.
+\textcolor{blue}{\\I have added a some discussion as suggested.}
+
+The main contribution to JMA would then be a detailed discussion of
+how the author has struggled to capture these goals in the form of
+mathematical functions that can be optimized and will then approximate
+these goals.  In this respect, the manuscript still has some
+shortcomings.
+
+They may be fixed in two ways: Enhance the detailed explanations of
+the choices made in creating package [27]; and add a more extended
+discussion of a few things that might be approached differently in a
+future package ( -- which can also handle links).
+\textcolor{blue}{\\I have added discussions as suggested and also
+  included a modified analysis of functionality for links.\\ \\}
+
+In view of this, I recommend that Appendices A and B should be firmly
+integrated into the main text.  The discussions therein relate rather
+directly to what I see as the main contribution of a JMA paper on this
+topic.\textcolor{blue}{\\Done.\\ \\}
+
+A few comments on some rebuttals:
+
+RE: Why use Bezier curves? : A key point, which should be mentioned in
+the justification for Bezier curves, is that they interpolate their
+end-points. This gives users a convenient, more direct control of
+where these curve segments will appear than what they would get from
+G2-continuous B-splines, which are only approximating their control
+points.\textcolor{blue}{\\Fixed: sentence added to manuscript\\ \\}
+
+RE: Why not place nodes at the crossing points? : Yes, this will
+require a different, slightly more sophisticated drawing interface;
+but this may then pay off heavily in a simpler, more efficient
+optimization process.
+
+For each crossing point, the user would see an orthogonal ``cross-hair"
+that can be shifted and rotated as a whole.  In addition, there are
+two parameters (handle-pairs) that control the ``velocities" of the two
+strands through the crossing.  The optimization routine would
+fine-tune these velocities to achieve matching curvature for the two
+sequentially connected Bezier curves.
+
+And, yes, if a crossing point falls on a line of mirror symmetry, the
+crosshair would automatically be angled at 45 degrees with respect to
+this line.  And if the knot has n-fold rotational symmetry, n such
+cross hairs would be placed at the vertices of a regular n-gon.  (All
+this is not such a ``nightmare" if it is properly considered from the
+beginning.)
+
+I don't expect that anything in the current system should be changed;
+but this approach should definitely be considered in a future version
+of such a package.
+\textcolor{blue}{\\ This scheme certainly sounds achievable and I have
+  alluded to it in the manuscript at the two trefoil knot
+  discussion.\\ \\}
+
+
+RE: Mismatched diagram and symmetry specifications: ``This situation
+cannot occur" -- If the user makes a mistake, will the current system
+send a suitable error message?\textcolor{blue}{\\For convenience, I
+  reproduce the original exchange below:\\ \\} {\tiny Reviewer's
+  comment, round 3: ``If all nodes fulfill the specified symmetry
+  constraints (as shown on page 11, lines 15-22 and on lines 35-43),
+  but the connection diagram does not completely adhere to the
+  specified symmetry - What happens? - Does the package check this and
+  let the user know about the discrepancy?"}  \textcolor{blue}{\tiny
+  My original reply: ``This situation cannot occur: symmetric nodes
+  imply a symmetric diagram".\\ \\} \textcolor{blue}{A more nuanced
+  reply would have been for me to observe that in the event of a
+  mismatch between diagram and symmetry specifications, the symmetry
+  specifications take priority and the resulting symmetrised diagram
+  has symmetric nodes but the connections are not as intended.  In
+  practice, this is immediately visually apparent: one sees beautiful
+  symmetric nodes joined by Bezier curves that do not possess the
+  intended topology.  The diagram is a disorganised and ugly tangled
+  mess, clearly not reflecting the intended configuration.  Generally,
+  one glance at the diagram simultaneously reveals the problem and its
+  solution (just reconnect the dots in the correct order).\\ \\}
+
+RE: A hierarchical way of dealing with symmetry: ``This is exactly
+what I have done!  The referee gives an accurate summary of the code's
+methodology." - Place a corresponding, extended description into the
+main text.\textcolor{blue}{\\Done.  New text added in section 3.2:
+  From a numerical perspective, the software takes advantage of a
+  hierarchical representation of symmetrical knots: the curve is
+  specified for one unique fragment of the knot, and the complete knot
+  is reconstructed by replicating that fragment with mirroring and
+  rotation as required.  The optimization is effectively carried out
+  for this unique fragment (with proper end-conditions).\\ \\}
+
+
+
+
+RE: A slider interface for changing some optimization parameters: It
+is clear why this would not be practical in the current system, where
+the optimization of a pretzel knot ``may take a few weeks."  But this
+also suggests that there is much room for improvement!  Perhaps some
+badness functions are not really needed or are badly implemented.
+\textcolor{blue}{\\ This is an excellent suggestion and indeed many of
+  the badness functions may well turn out to be superfluous, or at
+  least susceptible to faster heuristics [although I would argue that
+    the functions all adhere to efficient vectorised R coding
+    standards].  If it turns out that some of the badness weightings
+  can be set to zero without degrading the resulting visual
+  attractiveness, this would certainly be worth pursuing.\\ \\}
+
+RE: Link projections: In a future system, the planning for handling
+links should come in right at the beginning.  It is not at all clear
+why ``Each component would have its own badness."
+
+Many of the important badness functions (e.g. separations of nodes or
+of non-crossing curve segments) are based purely on local geometry and
+need not know what component of a link they refer to.  Perhaps the
+overall length of a knot or of a link-component is not a good metric,
+and should be replaced with some other functions of the length of
+curve segments between crossings.  \textcolor{blue}{I have spent many
+  hours pondering this comment, in particular my original assertion
+  that each component would have its own badness.  I took this to be
+  axiomatic, but on [extensive] reflection the referee makes an
+  excellent point, specifically that the badness metrics are all {\em
+    local}.  This is a profound observation, one that eluded me over
+  several years of developing and using the software and thinking
+  about link diagrams.  I think I missed it because the badness
+  functions are largely geared towards preserving the {\em global}
+  topology of the diagram [including preventing Reidemeister moves]
+  and it seemed natural to consider a link diagram from a topological
+  perspective, that is, to consider the badness of each link
+  separately.  But the referee's comment is infuriatingly obvious once
+  it has been pointed out.  Much of the appendix B is irrelevant in
+  the light of this observation; I have shortened it considerably and
+  rephrased to reflect the new thinking.  One suggestion above was to
+  incorporate appendices A and B in to the main body of the text,
+  which I have done, but to accommodate this comment I have
+  restructured the text (of what was appendix B) to reflect this
+  insight.\\ \\}
+
+Some detailed comments on manuscript R2:
+
+Page 6, line 20: How many (x,y) pairs are there?
+\textcolor{blue}{\\Object {\tt k76} has a total of 49 lines and I have
+  indicated this in the text.  Old text: ``Above we see only the first
+  six lines of the object".  New text: ``The object has 49 lines, of
+  which only the first six are shown".\\ \\}
+
+Page 6, Line 36: Why ``$\mathbb{R}^{50}$"? - Are there a total of 50
+parameters?  What are they?  \textcolor{blue}{\\This was not clear and
+  I have rephased.  Old text: ``The optimization typically proceeds
+  over $\mathbb{R}^{50}$\ldots". New text: ``The optimization
+  proceeds over $\mathbb{R}^n$ where $n$ is the number of parameters
+  needed to specify the path; typically $n\gtrsim 50$ for the knots
+  presented here".\\ \\}
+
+Page 6, Line 39: ``... the overall bending energy." {\tt ->>} 'minimizing
+overall bending energy.'
+\textcolor{blue}{\\Fixed\\ \\}
+
+Page 6, Line 42: What is ``{\tt > b <}" ?  \textcolor{blue}{\\ This is
+  just a detail of standard R syntax.  The first ``{\tt > }" is just
+  the R prompt; letter {\tt b} is just a variable; and the symbol
+  ``{\tt <-}" usually has a gloss of ``becomes".  Thus {\tt b <- 4} is
+  read ``{\tt b} becomes 4". The reason I need a variable is that I
+  want to show the result of applying two functions, {\tt
+    total\_crossing\_angles()} and {\tt total\_bending\_energy()}, to
+  the same variable {\tt b}.\\ \\}
+
+
+Figures 3 and 5: Try running these figures with only 50 points (and
+circles) for each Bezier segment. \textcolor{blue}{\\This is easily
+  achievable in the package but the result fails to provide any
+  informative or enlightening information.  It simply highlights the
+  fact that $n$ was too small.  Using $n=50$ is (almost)
+  indistinguishable from $n=100$.  I found that $n=100$ represented
+  essentially the best visual representation while being
+  computationally not too onerous.  I show the requested figure at the
+  end (along with $n=7$ and $n=100$ for comparison),
+  figures~\ref{7_6_n7}, \ref{7_6_n50}, and \ref{7_6_n100}.  These were
+  created with}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{blue}{R> pdf(file="k7_6_n07.pdf") ; knotplot2(k7_6,n=7)   ; dev.off()}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{blue}{R> pdf(file="k7_6_n50.pdf") ; knotplot2(k7_6,n=50)  ; dev.off()}
+\end{Verbatim}
+\begin{Verbatim}[commandchars=\\\{\}]
+\textcolor{blue}{R> pdf(file="k7_6_n100.pdf") ; knotplot2(k7_6,n=100) ; dev.off()}
+\end{Verbatim}
+
+
+Figure 4 caption: Much of the explanation of ``7 3" versus ``3 7" is
+already in the main text.  \textcolor{blue}{\\Fixed\\ \\}
+
+
+Page 8, Line 60: ``Why 64 real variables"?  What are they?  How does
+this agree with ``R50" on page 6?\textcolor{blue}{\\ The 64 variables
+  are just the parameters required to describe the knot path, it
+  agrees with the (reworded) coment about $\mathbb{R}^{50}$.\\ \\}
+
+Figure 7: Where does the spiky artifact in the upper right lobe come
+from?  \textcolor{blue}{\\I see nothing in figure 7 that could be so
+  described.  I expect this is a rendering issue, if so it will be
+  sorted out at proofreading stage.\\ \\}
+
+Page 12, Line 52: ``...a rotationally symmetric" should be ``... a knot with
+pure cyclic rotational symmetry, rather than dihedral symmetry"
+  \textcolor{blue}{\\Done\\ \\}
+
+Figure 9: Why did the user choose to place three nodes on the outer
+lobes, rather than only two? - Was this easier to express the desired
+symmetry??  \textcolor{blue}{\\Sort of.  Having more nodes allows for
+  finer and more sophisticated control over the path, and having too
+  few nodes results in a displeasing, unnatural flabby configuration.
+  On the other hand, having too many nodes results in the optimization
+  routine thrashing and failing to converge.  In this case it is
+  desirable to have an odd number of nodes: 12,4,16,8,20 are
+  constrained by the symmetry routine to be exactly on one of the five
+  lines of symmetry, and to intersect its line at exactly $90^\circ$.
+  Frankly the choice of number of nodes has been troublesome in the
+  development of the software.  Perhaps this issue is of interest to
+  the JMA readership and I have added a brief sentence discussing it
+  to the manuscript: ``Note that increasing the number of nodes
+  provides more control over the path at the expense of a more
+  difficult optimization process".  Also, at the discussion of Figure
+  9: ``from Figure 9 we see that these nodes are constrained to lie on
+  one of the five lines of symmetry, cutting it at $90^\circ$".\\ \\}
+
+Page 16, Line 47: ``The strands exert a couple but no force on one
+another."  Lengthy discussions should be relegated to the main text,
+rather than be in figure captions \textcolor{blue}{\\Done.  This
+  discussion is relocated to the main text as suggested.\\ \\}
+
+
+Figure 14: All the knots are nicer than the ones in Ref [24].  Good
+results!\textcolor{blue}{\\Thank you!}
+
+
+References: Several of them are incomplete and need an URL or a more
+detailed description where the source can be found.
+\textcolor{blue}{\\Done. \\ \\}
+
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=10cm]{"k7_6_n07.pdf"}
+  \caption{Knot \label{7_6_n7} $7_6$ with $n=7$ nodes per segment}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=10cm]{"k7_6_n50.pdf"}
+  \caption{Knot \label{7_6_n50} $7_6$ with $n=50$ nodes per segment}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=10cm]{"k7_6_n100.pdf"}
+  \caption{Knot \label{7_6_n100} $7_6$ with $n=100$ nodes per segment}
+\end{figure}
+
+\end{document}

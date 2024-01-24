@@ -6,21 +6,21 @@ a <- reader(filename)
 
 Mver <- matrix(c(
     12,14,
-    2,6,
-    1,7,
-    18,8,
+    02,06,
+    01,07,
+    18,08,
     11,15,
     10,16,
-    9,17
+    09,17
 ),ncol=2,byrow=TRUE)
 
 Mrot <- matrix(c(
-    12,6,18,
-    13,7,1,
-    14,8,2,
-    3,15,9,
-    4,16,10,
-    5,17,11
+    12,06,18,
+    13,07,01,
+    14,08,02,
+    03,15,09,
+    04,16,10,
+    05,17,11
     ),ncol=3,byrow=TRUE)
 
 
@@ -46,7 +46,7 @@ jj <- knotoptim(filename,
                 symobj = sym31,
                 ou   = ou31,
                 prob=0,
-                iterlim=1000,print.level=2
+                iterlim=100,print.level=2
 #                control=list(trace=100,maxit=1000), # these arguments for optim()
 #                useNLM=FALSE
                 )

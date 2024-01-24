@@ -1,0 +1,12 @@
+citHeader("To cite in publications use:")
+
+citation(auto = meta)
+
+bibentry(bibtype = "misc",
+         title = "Visually pleasing knot projections",
+         author = person(c("Robin", "K.", "S."), "Hankin"),
+         doi = "10.1080/17513472.2023.2185058",
+         URL = "https://doi.org/10.1080/17513472.2023.2185058",
+         year = "2023",
+	 journal = "Journal of Mathematics and the Arts"
+)

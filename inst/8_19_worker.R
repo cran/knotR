@@ -1,29 +1,38 @@
 library(knotR)
 filename <- "8_19.svg"
 a <- reader(filename)
+#knotplot2(a,node=TRUE)
+
 Mver <- matrix(c(
-    02,18,
-    03,17,
-    04,16,
-    05,15,
-    07,13,
-    08,12,
-    09,11,
-    14,06
+    8,14,
+    9,13,
+    15,7,
+    2,20,
+    16,6,
+    3,19,
+    4,18,
+    10,12,
+    5,17
 ),ncol=2,byrow=TRUE)
+
+
+sym819 <- symmetry_object(a,Mver=Mver,xver=c(1,11))
+a <- symmetrize(a,sym819)
+#knotplot2(a,node=T)
+#knotplot2(a,circ=FALSE,text=TRUE,rainbow=TRUE,lwd=1)
 
 ou819 <- matrix(c(  # NB Not alternating!
-    01,06,
-    02,15,
-    09,03,
-    05,10,
-    06,15,
-    14,07,
-    12,18,
-    16,11
+    15,8,
+    13,20,
+    18,12,
+    5,11,
+    10,3,
+    1,7,
+    6,17,
+    2,16
 ),ncol=2,byrow=TRUE)
 
-sym819 <- symmetry_object(a,Mver=Mver,xver=c(1,10))
+#knotplot(a,ou819)
 
 jj <-
   knotoptim(filename,

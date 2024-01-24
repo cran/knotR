@@ -6,31 +6,33 @@
 \usepackage{wasysym}
 \usepackage{amssymb}
 
-%\title{Knot Theory in \R}
-%\subtitle{The \pkg{knot} package}
+%\title{Knot Theory in R}
+%\subtitle{The \pkg{knotR} package}
 %\author{Robin K. S. Hankin}
 %\maketitle
 
 
-\author{Robin K. S. Hankin\\Auckland University of Technology}
-\title{Knot theory in \proglang{R}}
+\author{Robin K. S. Hankin\\The University of Stirling}
+\title{Visually pleasing knot projections in \proglang{R}}
 %\VignetteIndexEntry{A vignette for the knot package}
 %% for pretty printing and a nice hypersummary also set:
 \Plainauthor{Robin K. S. Hankin}
-\Plaintitle{Pleasing knot projections in R}
-\Shorttitle{Pleasing knot projections in \proglang{R}}
+\Plaintitle{Visually pleasing knot projections in R}
+\Shorttitle{Visually pleasing knot projections in \proglang{R}}
 
 %% an abstract and keywords
 \Abstract{
-In this short article I introduce the \pkg{knot} package, which
-creates two dimensional knot diagrams optimized for visual appearance.
 
-The \pkg{knot} package is a systematic R-centric suite of software for
-the creation of production-quality artwork of knot diagrams.
+To cite this work in publications, use \cite{hankin2023}.
+
+In this short article I introduce the \pkg{knotR} package, which
+creates two dimensional knot diagrams optimized for visual appearance.
+The \pkg{knotR} package is a systematic \proglang{R}-centric suite of software
+for the creation of production-quality artwork of knot diagrams.
 
 }
 
-\Keywords{Knot theory, \proglang{R}}
+\Keywords{Knot theory, R}
 \Plainkeywords{Knot theory, R}
 
 %% publication information
@@ -42,13 +44,14 @@ the creation of production-quality artwork of knot diagrams.
 %% \Year{2004}
 %% \Submitdate{2004-09-29}
 %% \Acceptdate{2004-09-29}
+%% \Repository{https://github.com/RobinHankin/knotR} %% this line for Tragula
 
 %% The address of (at least) one author should be given
 %% in the following format:
 \Address{
-  Robin K. S. Hankin\\
-  Auckland University of Technology\\
-  New Zealand
+  Robin K. S. Hankin\\%\orcid{https://orcid.org/0000-0001-5982-0415}\\
+  The University of Stirling\\
+  Scotland
 }
 %% It is also possible to add a telephone and fax number
 %% before the e-mail in the following format:
@@ -70,7 +73,6 @@ ignore <- require(knotR)
 
 
 \section{Introduction}
-
 A \emph{mathematical knot} is a smooth, unoriented embedding of a
 circle~$\mathbb{S}^1$ into~$\mathbb{R}^3$~\citep{manturov2004}.  Two
 knots are said to be equivalent if one can be continuously deformed in
@@ -220,12 +222,12 @@ function using numerical methods.
 Two examples of desiderata for such an objective function might be to
 keep the strands crossing at right angles, and the overall bending
 energy.  These are evaluated in the package by functions
-\code{total_crossing_angles()} and~\code{total_bending_energy()}
+\code{total_crossing_angle_badness()} and~\code{total_bending_energy()}
 respectively:
 
 <<k76_desiderata>>=
 b <- as.controlpoints(k76_rough)
-total_crossing_angles(b)
+total_crossing_angle_badness(b)
 total_bending_energy(b)
 @ 
 
@@ -352,17 +354,17 @@ overunder_fig8 <-
       ),ncol=2,byrow=TRUE)
 
 jj <- sweep(as.inkscape(fig8),2,c(0,offy),"+")
-knotplot2(jj,setup=FALSE,node=TRUE,lwd=3,circ=0) # top left
+knotplot2(jj,add=TRUE,node=TRUE,lwd=3,circ=0) # top left
 
 fig8_symmetrized <- symmetrize(fig8,sym8)
 jj <- sweep(as.inkscape(fig8_symmetrized),2,c(offx,offy),"+")
-knotplot2(jj,setup=FALSE,node=FALSE,width=TRUE)  # top right
+knotplot2(jj,add=TRUE,node=FALSE,width=TRUE)  # top right
 
 jj <- sweep(as.inkscape(k4_1),2,c(0,0),"+")
-knotplot2(jj,setup=FALSE,node=FALSE,width=TRUE)  # lower left
+knotplot2(jj,add=TRUE,node=FALSE,width=TRUE)  # lower left
 
 jj <- sweep(as.inkscape(k4_1),2,c(offx,0),"+")
-knotplot(jj,overunder_fig8,setup=FALSE,gap=50)  # lower right
+knotplot(jj,overunder_fig8,add=TRUE)          # lower right
 
 @ 
 \caption{Figure eight knots drawn using different plotting methods.
@@ -440,9 +442,9 @@ jjB <- as.inkscape(perko_B)*1.7
 oA <- perko_A$overunder
 oB <- perko_B$overunder
 
-knotplot(jjA,ou=oA,setup=FALSE,gap=50,lwd=4)
+knotplot(jjA,ou=oA,add=TRUE,lwd=4)
 jjB <- sweep(as.inkscape(jjB),2,c(1500,-600),"+")
-knotplot(jjB,ou=oB,setup=FALSE,gap=50,lwd=4)
+knotplot(jjB,ou=oB,add=TRUE,lwd=4)
 @ 
 \caption{Two representations of knot~$10_{125}$, known as the 
 \label{perko_AB}  Perko Pair}
@@ -457,7 +459,7 @@ par(oma=c(0, 0, 0, 0))
 par(mar=c(0, 0, 0, 0))
 par(plt=c(0, 1, 0, 1))
 par(pty='m')
-knotplot(ornamental20,gap=20)
+knotplot(ornamental20)
 @ 
 \caption{An ornamental knot exhibiting fivefold
   rotational \label{orn20} symmetry; note the absence of mirror symmetry}
@@ -471,7 +473,7 @@ par(oma=c(0, 0, 0, 0))
 par(mar=c(0, 0, 0, 0))
 par(plt=c(0, 1, 0, 1))
 par(pty='m')
-knotplot(k10_123,gap=20)
+knotplot(k10_123)
 @ 
 \caption{Knot $10_{123}$, exhibiting fivefold symmetry}
   \end{center}
@@ -509,7 +511,7 @@ for(i in 1:3){
         k <- as.inkscape(a[[n]])
         k[,2] <- k[,2] - mean(k[,2])
         k <- sweep(k,2,c(xoff,yoff),"+")
-        knotplot(k,b[[n]],setup=FALSE,lwd=2,gap=30)
+        knotplot(k,b[[n]],add=TRUE,lwd=2)
     }
 }
 @ 

@@ -25,8 +25,7 @@ jj <-
             ou   = ou84,
             prob = 0,
             iterlim=1000,print.level=2,hessian=FALSE
-#            control=list(trace=100,maxit=2000), # these arguments for optim()
-#            useNLM=FALSE
+#            control=list(trace=100,maxit=10000),useNLM=FALSE
             )
 
 write_svg(jj, filename,safe=FALSE)

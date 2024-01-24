@@ -3,46 +3,55 @@ filename <- "8_16.svg"
 a <- reader(filename)
 #knotplot2(a,node=TRUE)
 
+
+
 Mver <- matrix(c(
+    09,25,
+    08,26,
     07,01,
-    08,22,
-    09,21,
-    20,10,
-    14,16,
-    19,11,
+    24,10,
+    16,18,
+    23,11,
+    15,19,
     06,02,
-    13,17,
-    12,18,
+    12,22,
+    15,19,
+    14,20,
+    13,21,
     05,03
 ),ncol=2,byrow=TRUE)
 
-sym816 <- symmetry_object(a,Mver=Mver,xver=c(4,15))
+sym816 <- symmetry_object(a,Mver=Mver,xver=c(4,17))
 a <- symmetrize(a,sym816)
-#knotplot2(a)
+
+
 #knotplot2(a,lwd=1,text=T,circ=F,rainbow=TRUE)
 
+
 ou816 <- matrix(c(
-    16,02,
-    03,19,
-    12,06,
-    07,15,
-    21,10,
-    11,16,
-    19,12,
-    15,20
+    25,10,
+    11,18,
+    23,12,
+    13,06,
+    07,16,
+    17,24,
+    19,02,
+    03,22
 ),ncol=2,byrow=TRUE)
 
 #knotplot(a,ou816)
+
 
 jj <-
   knotoptim(filename,
             symobj = sym816,
             ou   = ou816,
             prob = 0,
-                iterlim=1000, print.level=2
-#                control=list(trace=100,maxit=1000), # these arguments for optim()
-#                useNLM=FALSE
+                iterlim=10000, print.level=2
+#                control=list(trace=100,maxit=10000), useNLM=FALSE
 )
+
+
 write_svg(jj, filename,safe=FALSE)
 dput(jj,file=sub('.svg','.S',filename))
 
